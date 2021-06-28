@@ -1,33 +1,22 @@
-// const person: {
-// 	name: string;
-// 	age: number;
-// 	hobbies: string[];
-// 	role: [number, string]; // tuples
-// } = {
-// 	name: 'Jacob',
-// 	age: 39,
-// 	hobbies: [ 'sports', 'cooking' ],
-// 	role: [ 2, 'author' ]
-// };
+function combine(
+	input1: number | string,
+	input2: number | string
+) {
+	let result;
+	if (
+		typeof input1 === 'number' &&
+		typeof input2 === 'number'
+	) {
+		result = input1 + input2;
+	} else {
+		result = input1.toString() + input2.toString();
+	}
 
-enum Role {
-	ADMIN,
-	READ_ONLY,
-	AUTHOR
+	console.log(`result`, result);
+
+	return result;
 }
 
-const person = {
-	name: 'Jacob',
-	age: 39,
-	hobbies: [ 'sports', 'cooking' ],
-	role: Role.ADMIN
-};
+console.log(combine(6, 8));
 
-// person.role.push('admin');
-// person.role[1] = 10;
-
-if (person.role === Role.ADMIN) {
-	console.log('Admin');
-}
-
-console.log(person);
+console.log(combine('Max', 'Erin'));
