@@ -1,16 +1,19 @@
-function combine(input1, input2, resultType) {
-    var result;
-    if ((typeof input1 === 'number' &&
-        typeof input2 === 'number') ||
-        resultType === 'as-number') {
-        result = +input1 + +input2;
-    }
-    else {
-        result = input1.toString() + input2.toString();
-    }
-    console.log("result", result);
-    return result;
+function add(n1, n2) {
+    return n1 + n2;
 }
-console.log(combine(6, 8, 'as-number'));
-console.log(combine('Max', 'Erin', 'as-text'));
-console.log(combine('61', '18', 'as-number'));
+function printResult(num) {
+    console.log("Result: " + num);
+}
+function addAndHandle(n1, n2, cb) {
+    var result = n1 + n2;
+    cb(result);
+}
+var combineValues;
+combineValues = add;
+// combineValues = 5;
+// combineValues = printResult;
+printResult(add(5, 6));
+printResult(combineValues(15, 16));
+addAndHandle(10, 20, function (result) {
+    console.log(result);
+});
