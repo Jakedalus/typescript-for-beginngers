@@ -19,13 +19,25 @@ class Department {
 	}
 
 	printEmployeeInformation() {
-		console.log(
-			`this.employees.length`,
-			this.employees.length
-		);
-		console.log(`this.employees`, this.employees);
+		console.log(`# of employees`, this.employees.length);
+		console.log(`Employees:`, this.employees);
 	}
 }
+
+class ITDepartment extends Department {
+	constructor(id: string, public admins: string[]) {
+		super(id, 'IT');
+	}
+}
+
+console.log('== IT ==');
+
+const IT = new ITDepartment('it1', [ 'Jake' ]);
+IT.describe();
+console.log(`IT`, IT);
+IT.printEmployeeInformation();
+
+console.log('== Accounting ==');
 
 const accounting = new Department('d1', 'Accounting');
 
@@ -38,7 +50,7 @@ accounting.addEmployee('Francis');
 // accounting.employees[2] = 'Anna';  // no longer works when employees is made private
 accounting.printEmployeeInformation();
 
-const accountingCopy = { describe: accounting.describe };
+// const accountingCopy = { describe: accounting.describe };
 
 // accountingCopy.describe();  Doesn't work because of this: Department in describe
 
