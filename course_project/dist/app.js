@@ -37,15 +37,42 @@ var ITDepartment = (function (_super) {
     function ITDepartment(id, admins) {
         var _this = _super.call(this, id, 'IT') || this;
         _this.admins = admins;
+        _this.secret = 'secreeeet';
         return _this;
     }
+    Object.defineProperty(ITDepartment.prototype, "getSecret", {
+        get: function () {
+            return this.secret;
+        },
+        enumerable: false,
+        configurable: true
+    });
+    Object.defineProperty(ITDepartment.prototype, "setSecret", {
+        set: function (newSecret) {
+            this.secret = newSecret;
+        },
+        enumerable: false,
+        configurable: true
+    });
+    ITDepartment.prototype.addEmployee = function (employee) {
+        if (employee === 'Max') {
+            console.log('Cannot add Max');
+            return;
+        }
+        this.employees.push(employee);
+    };
     return ITDepartment;
 }(Department));
 console.log('== IT ==');
 var IT = new ITDepartment('it1', ['Jake']);
+IT.addEmployee('Max');
+IT.addEmployee('Jake');
 IT.describe();
 console.log("IT", IT);
 IT.printEmployeeInformation();
+console.log(IT.getSecret);
+IT.setSecret = 'new seeeeecret';
+console.log(IT.getSecret);
 console.log('== Accounting ==');
 var accounting = new Department('d1', 'Accounting');
 console.log("accounting", accounting);

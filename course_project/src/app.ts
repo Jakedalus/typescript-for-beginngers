@@ -1,6 +1,6 @@
 class Department {
 	// private name: string;
-	private employees: string[] = [];
+	protected employees: string[] = [];
 
 	constructor(
 		private readonly id: string,
@@ -25,17 +25,41 @@ class Department {
 }
 
 class ITDepartment extends Department {
+	private secret: string;
+
 	constructor(id: string, public admins: string[]) {
 		super(id, 'IT');
+		this.secret = 'secreeeet';
+	}
+
+	get getSecret() {
+		return this.secret;
+	}
+
+	set setSecret(newSecret: string) {
+		this.secret = newSecret;
+	}
+
+	addEmployee(employee: string) {
+		if (employee === 'Max') {
+			console.log('Cannot add Max');
+			return;
+		}
+		this.employees.push(employee);
 	}
 }
 
 console.log('== IT ==');
 
 const IT = new ITDepartment('it1', [ 'Jake' ]);
+IT.addEmployee('Max');
+IT.addEmployee('Jake');
 IT.describe();
 console.log(`IT`, IT);
 IT.printEmployeeInformation();
+console.log(IT.getSecret);
+IT.setSecret = 'new seeeeecret';
+console.log(IT.getSecret);
 
 console.log('== Accounting ==');
 
