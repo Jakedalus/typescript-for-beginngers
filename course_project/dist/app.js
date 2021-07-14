@@ -20,9 +20,6 @@ var Department = (function () {
         this.name = name;
         this.employees = [];
     }
-    Department.prototype.describe = function () {
-        console.log("Department " + this.id + ": " + this.name);
-    };
     Department.prototype.addEmployee = function (employee) {
         this.employees.push(employee);
     };
@@ -30,6 +27,10 @@ var Department = (function () {
         console.log("# of employees", this.employees.length);
         console.log("Employees:", this.employees);
     };
+    Department.createEmployee = function (name) {
+        return name;
+    };
+    Department.fiscalYear = 2021;
     return Department;
 }());
 var ITDepartment = (function (_super) {
@@ -54,6 +55,9 @@ var ITDepartment = (function (_super) {
         enumerable: false,
         configurable: true
     });
+    ITDepartment.prototype.describe = function () {
+        console.log("IT Department " + this.id + ": " + this.name);
+    };
     ITDepartment.prototype.addEmployee = function (employee) {
         if (employee === 'Max') {
             console.log('Cannot add Max');
@@ -62,6 +66,46 @@ var ITDepartment = (function (_super) {
         this.employees.push(employee);
     };
     return ITDepartment;
+}(Department));
+var AccountingDepartment = (function (_super) {
+    __extends(AccountingDepartment, _super);
+    function AccountingDepartment(id) {
+        var _this = _super.call(this, id, 'Accounting') || this;
+        _this.secret = 'secreeeet';
+        return _this;
+    }
+    AccountingDepartment.getInstance = function () {
+        if (AccountingDepartment.instance) {
+            return this.instance;
+        }
+        this.instance = new AccountingDepartment('d2');
+        return this.instance;
+    };
+    Object.defineProperty(AccountingDepartment.prototype, "getSecret", {
+        get: function () {
+            return this.secret;
+        },
+        enumerable: false,
+        configurable: true
+    });
+    Object.defineProperty(AccountingDepartment.prototype, "setSecret", {
+        set: function (newSecret) {
+            this.secret = newSecret;
+        },
+        enumerable: false,
+        configurable: true
+    });
+    AccountingDepartment.prototype.describe = function () {
+        console.log("Accounting Department " + this.id + ": " + this.name);
+    };
+    AccountingDepartment.prototype.addEmployee = function (employee) {
+        if (employee === 'Max') {
+            console.log('Cannot add Max');
+            return;
+        }
+        this.employees.push(employee);
+    };
+    return AccountingDepartment;
 }(Department));
 console.log('== IT ==');
 var IT = new ITDepartment('it1', ['Jake']);
@@ -74,9 +118,12 @@ console.log(IT.getSecret);
 IT.setSecret = 'new seeeeecret';
 console.log(IT.getSecret);
 console.log('== Accounting ==');
-var accounting = new Department('d1', 'Accounting');
+var accounting = AccountingDepartment.getInstance();
 console.log("accounting", accounting);
 accounting.describe();
 accounting.addEmployee('Max');
 accounting.addEmployee('Francis');
 accounting.printEmployeeInformation();
+var newWorker = Department.createEmployee('Francis');
+console.log(newWorker);
+console.log(Department.fiscalYear);

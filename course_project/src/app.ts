@@ -1,17 +1,16 @@
-class Department {
+abstract class Department {
 	// private name: string;
+	static fiscalYear = 2021;
 	protected employees: string[] = [];
 
 	constructor(
-		private readonly id: string,
-		private name: string
+		protected readonly id: string,
+		protected name: string
 	) {
 		// this.name = n;
 	}
 
-	describe(this: Department) {
-		console.log(`Department ${this.id}: ${this.name}`);
-	}
+	abstract describe(this: Department): void;
 
 	addEmployee(employee: string) {
 		// this.id = 'd2'; // doesn't work once readonly
@@ -21,6 +20,10 @@ class Department {
 	printEmployeeInformation() {
 		console.log(`# of employees`, this.employees.length);
 		console.log(`Employees:`, this.employees);
+	}
+
+	static createEmployee(name: string) {
+		return name;
 	}
 }
 
@@ -38,6 +41,50 @@ class ITDepartment extends Department {
 
 	set setSecret(newSecret: string) {
 		this.secret = newSecret;
+	}
+
+	describe() {
+		console.log(`IT Department ${this.id}: ${this.name}`);
+	}
+
+	addEmployee(employee: string) {
+		if (employee === 'Max') {
+			console.log('Cannot add Max');
+			return;
+		}
+		this.employees.push(employee);
+	}
+}
+
+class AccountingDepartment extends Department {
+	private secret: string;
+	private static instance: AccountingDepartment;
+
+	private constructor(id: string) {
+		super(id, 'Accounting');
+		this.secret = 'secreeeet';
+	}
+
+	static getInstance() {
+		if (AccountingDepartment.instance) {
+			return this.instance;
+		}
+		this.instance = new AccountingDepartment('d2');
+		return this.instance;
+	}
+
+	get getSecret() {
+		return this.secret;
+	}
+
+	set setSecret(newSecret: string) {
+		this.secret = newSecret;
+	}
+
+	describe() {
+		console.log(
+			`Accounting Department ${this.id}: ${this.name}`
+		);
 	}
 
 	addEmployee(employee: string) {
@@ -63,7 +110,7 @@ console.log(IT.getSecret);
 
 console.log('== Accounting ==');
 
-const accounting = new Department('d1', 'Accounting');
+const accounting = AccountingDepartment.getInstance();
 
 console.log(`accounting`, accounting);
 
@@ -73,6 +120,14 @@ accounting.addEmployee('Max');
 accounting.addEmployee('Francis');
 // accounting.employees[2] = 'Anna';  // no longer works when employees is made private
 accounting.printEmployeeInformation();
+
+const newWorker = Department.createEmployee('Francis');
+
+console.log(newWorker);
+
+console.log(Department.fiscalYear);
+
+////////
 
 // const accountingCopy = { describe: accounting.describe };
 
