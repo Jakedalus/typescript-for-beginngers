@@ -1,7 +1,8 @@
-// always objects
-
-interface Greetable {
-	name: string;
+interface Named {
+	readonly name: string;
+	outputName?: string; // optional
+}
+interface Greetable extends Named {
 	greet(phrase: string): void;
 }
 
