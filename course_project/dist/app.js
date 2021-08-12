@@ -69,3 +69,28 @@ var horse = {
 };
 moveAnimal(bird);
 moveAnimal(horse);
+var paragraph = document.getElementById('message');
+var input = document.getElementById('user-input');
+if (input) {
+    input.value = 'Hi there';
+}
+var errorBag = {
+    email: 'not a valid email',
+    username: 'must start with a letter'
+};
+function add(n1, n2) {
+    if (typeof n1 === 'string' || typeof n2 === 'string') {
+        return n1.toString() + n2.toString();
+    }
+    return n1 + n2;
+}
+var result = add('Jake', ' Carpenter');
+var names = result.split(' ');
+var result2 = add('Jake', 1);
+var names2 = result2.split(' ');
+var fetchedUserData = {
+    id: 'u1',
+    name: 'MAx',
+    job: { title: 'Cool guy', company: 'Mine' }
+};
+var userInputNyll = null;

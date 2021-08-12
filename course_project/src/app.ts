@@ -114,3 +114,70 @@ const horse: Animal = {
 
 moveAnimal(bird);
 moveAnimal(horse);
+
+// Type Casting
+
+const paragraph = document.getElementById('message');
+// const input = document.getElementById(
+// 	'user-input'
+// )! as HTMLInputElement;
+const input = document.getElementById('user-input');
+
+if (input) {
+	(input as HTMLInputElement).value = 'Hi there';
+}
+
+// Index Properties
+
+interface ErrorContainer {
+	// id: string; // cannot be an number
+	[prop: string]: string;
+}
+
+const errorBag: ErrorContainer = {
+	email: 'not a valid email',
+	username: 'must start with a letter'
+};
+
+// Function Overloads
+function add(n1: number, n2: number): number;
+function add(n1: string, n2: string): string;
+function add(n1: number, n2: string): string;
+function add(n1: string, n2: number): string;
+function add(n1: Mergable, n2: Mergable) {
+	if (typeof n1 === 'string' || typeof n2 === 'string') {
+		return n1.toString() + n2.toString();
+	}
+	return n1 + n2;
+}
+
+const result = add('Jake', ' Carpenter');
+const names = result.split(' ');
+
+const result2 = add('Jake', 1);
+const names2 = result2.split(' ');
+
+// const result3 = add(3, 1);
+// const names3 = result3.split(' ');
+
+// Optional Chaining
+
+const fetchedUserData = {
+	id: 'u1',
+	name: 'MAx',
+	job: { title: 'Cool guy', company: 'Mine' }
+};
+
+// console.log(
+// 	`fetchedUserData.job.title`,
+// 	fetchedUserData?.job?.title
+// );
+
+// Nullish Coalescing
+
+const userInputNyll = null;
+
+// const storedInput = userInputNyll || 'DEFAULT';
+// const storedInput = userInputNyll ?? 'DEFAULT';
+
+// console.log(`storedInput`, storedInput);

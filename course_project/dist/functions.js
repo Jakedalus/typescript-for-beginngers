@@ -1,5 +1,5 @@
 "use strict";
-function add(n1, n2) {
+function addN(n1, n2) {
     return n1 + n2;
 }
 function printResult(num) {
@@ -10,8 +10,8 @@ function addAndHandle(n1, n2, cb) {
     cb(result);
 }
 var combineValues;
-combineValues = add;
-printResult(add(5, 6));
+combineValues = addN;
+printResult(addN(5, 6));
 printResult(combineValues(15, 16));
 addAndHandle(10, 20, function (result) {
     console.log(result);
