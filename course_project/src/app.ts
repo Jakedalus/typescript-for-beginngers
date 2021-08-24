@@ -1,183 +1,109 @@
-// Intersection Types
+// Built in Generics
+const names3: Array<string> = [ 'jake' ];
 
-type Admin = {
-	name: string;
-	privileges: string[];
-};
+const promise: Promise<string> = new Promise(resolve => {
+	setTimeout(() => {
+		resolve('Done');
+	}, 2000);
+});
 
-type Employee = {
-	name: string;
-	startDate: Date;
-};
+promise.then(data => {
+	data.split(' '); // works because TS knows now
+});
 
-type ElevatedEmployee = Admin & Employee;
+// Writing our own
 
-const e1: ElevatedEmployee = {
-	name: 'Jake',
-	privileges: [ 'create server' ],
-	startDate: new Date()
-};
-
-// Type Guards
-
-type Mergable = string | number;
-type Numeric = number | boolean;
-
-type Universal = Mergable & Numeric;
-
-function addMergable(n1: Mergable, n2: Mergable) {
-	if (typeof n1 === 'string' || typeof n2 === 'string') {
-		return n1.toString() + n2.toString();
-	}
-	return n1 + n2;
+function merge<T extends object, U extends object>(
+	objA: T,
+	objB: U
+) {
+	return Object.assign(objA, objB);
 }
 
-type UnknownEmployee = Employee | Admin;
-
-function printEmployeeInfo(employee: UnknownEmployee) {
-	console.log('Name:', employee.name);
-	if ('privileges' in employee) {
-		console.log('Privileges:', employee.privileges);
-	}
-	if ('startDate' in employee) {
-		console.log('Date:', employee.startDate);
-	}
-}
-
-printEmployeeInfo(e1);
-
-class Car {
-	drive() {
-		console.log('Driving');
-	}
-}
-
-class Truck {
-	drive() {
-		console.log('Drive truck');
-	}
-
-	loadCargo(amount: number) {
-		console.log('loading ', amount);
-	}
-}
-
-type Vehicle = Car | Truck;
-
-const v1 = new Car();
-const v2 = new Truck();
-
-function useVehicle(v: Vehicle) {
-	v.drive();
-	if (v instanceof Truck) {
-		v.loadCargo(3);
-	}
-}
-
-useVehicle(v1);
-useVehicle(v2);
-
-// Discriminated Union
-
-interface Bird {
-	type: 'bird';
-	flyingSpeed: number;
-}
-
-interface Horse {
-	type: 'horse';
-	runningSpeed: number;
-}
-
-type Animal = Bird | Horse;
-
-function moveAnimal(a: Animal) {
-	switch (a.type) {
-		case 'bird':
-			console.log(`Moving with speed ${a.flyingSpeed}`);
-			break;
-		case 'horse':
-			console.log(`Moving with speed ${a.runningSpeed}`);
-			break;
-	}
-}
-
-const bird: Animal = {
-	type: 'bird',
-	flyingSpeed: 10
-};
-
-const horse: Animal = {
-	type: 'horse',
-	runningSpeed: 37
-};
-
-moveAnimal(bird);
-moveAnimal(horse);
-
-// Type Casting
-
-const paragraph = document.getElementById('message');
-// const input = document.getElementById(
-// 	'user-input'
-// )! as HTMLInputElement;
-const input = document.getElementById('user-input');
-
-if (input) {
-	(input as HTMLInputElement).value = 'Hi there';
-}
-
-// Index Properties
-
-interface ErrorContainer {
-	// id: string; // cannot be an number
-	[prop: string]: string;
-}
-
-const errorBag: ErrorContainer = {
-	email: 'not a valid email',
-	username: 'must start with a letter'
-};
-
-// Function Overloads
-function add(n1: number, n2: number): number;
-function add(n1: string, n2: string): string;
-function add(n1: number, n2: string): string;
-function add(n1: string, n2: number): string;
-function add(n1: Mergable, n2: Mergable) {
-	if (typeof n1 === 'string' || typeof n2 === 'string') {
-		return n1.toString() + n2.toString();
-	}
-	return n1 + n2;
-}
-
-const result = add('Jake', ' Carpenter');
-const names = result.split(' ');
-
-const result2 = add('Jake', 1);
-const names2 = result2.split(' ');
-
-// const result3 = add(3, 1);
-// const names3 = result3.split(' ');
-
-// Optional Chaining
-
-const fetchedUserData = {
-	id: 'u1',
-	name: 'MAx',
-	job: { title: 'Cool guy', company: 'Mine' }
-};
-
-// console.log(
-// 	`fetchedUserData.job.title`,
-// 	fetchedUserData?.job?.title
+// fails b/c of constraint
+// const merged = merge(
+// 	{ name: 'jake', hobbies: [ "bein' cool" ] },
+// 	39
 // );
 
-// Nullish Coalescing
+const merged = merge(
+	{ name: 'jake', hobbies: [ "bein' cool" ] },
+	{ age: 39 }
+);
+console.log(merged);
 
-const userInputNyll = null;
+console.log(merged.age);
 
-// const storedInput = userInputNyll || 'DEFAULT';
-// const storedInput = userInputNyll ?? 'DEFAULT';
+const merged2 = merge(
+	{ cool: true, number: 123123 },
+	{ francis: 'no' }
+);
+console.log(merged2);
 
-// console.log(`storedInput`, storedInput);
+console.log(merged2.cool);
+
+interface Lengthy {
+	length: number;
+}
+
+function countAndPrint<T extends Lengthy>(
+	element: T
+): [T, string] {
+	const description =
+		element.length > 0
+			? `Got ${element.length} elements`
+			: 'Got no value';
+	return [ element, description ];
+}
+
+console.log(
+	`countAndPrint('yo dude)`,
+	countAndPrint('yo dude')
+);
+console.log(
+	`countAndPrint([23,234,234,65,363])`,
+	countAndPrint([ 23, 234, 234, 65, 363 ])
+);
+
+// keyof
+
+function extractAndConvert<
+	T extends object,
+	U extends keyof T
+>(obj: T, key: U) {
+	return 'Value: ' + obj[key];
+}
+
+console.log(extractAndConvert({ name: 'Jake' }, 'name'));
+
+// Generic Classes
+
+class DataStorage<T extends string | number | boolean> {
+	private data: T[] = [];
+
+	addItem(item: T) {
+		this.data.push(item);
+	}
+
+	removeItem(item: T) {
+		if (this.data.indexOf(item) === -1) {
+			return;
+		}
+		this.data.splice(this.data.indexOf(item), 1);
+	}
+
+	getItems() {
+		return [ ...this.data ];
+	}
+}
+
+const textStorage = new DataStorage<string>();
+textStorage.addItem('Sup');
+textStorage.addItem('yoooo');
+console.log(`textStorage`, textStorage.getItems());
+
+// const objStorage = new DataStorage<object>();
+// objStorage.addItem({ name: 'Max' });
+// objStorage.addItem({ name: 'Manu' });
+// objStorage.removeItem({ name: 'Max' });  // fails
+// console.log('objStorage', objStorage.getItems());

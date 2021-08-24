@@ -1,96 +1,58 @@
 "use strict";
-var e1 = {
-    name: 'Jake',
-    privileges: ['create server'],
-    startDate: new Date()
+var __spreadArray = (this && this.__spreadArray) || function (to, from) {
+    for (var i = 0, il = from.length, j = to.length; i < il; i++, j++)
+        to[j] = from[i];
+    return to;
 };
-function addMergable(n1, n2) {
-    if (typeof n1 === 'string' || typeof n2 === 'string') {
-        return n1.toString() + n2.toString();
-    }
-    return n1 + n2;
+var names3 = ['jake'];
+var promise = new Promise(function (resolve) {
+    setTimeout(function () {
+        resolve('Done');
+    }, 2000);
+});
+promise.then(function (data) {
+    data.split(' ');
+});
+function merge(objA, objB) {
+    return Object.assign(objA, objB);
 }
-function printEmployeeInfo(employee) {
-    console.log('Name:', employee.name);
-    if ('privileges' in employee) {
-        console.log('Privileges:', employee.privileges);
-    }
-    if ('startDate' in employee) {
-        console.log('Date:', employee.startDate);
-    }
+var merged = merge({ name: 'jake', hobbies: ["bein' cool"] }, { age: 39 });
+console.log(merged);
+console.log(merged.age);
+var merged2 = merge({ cool: true, number: 123123 }, { francis: 'no' });
+console.log(merged2);
+console.log(merged2.cool);
+function countAndPrint(element) {
+    var description = element.length > 0
+        ? "Got " + element.length + " elements"
+        : 'Got no value';
+    return [element, description];
 }
-printEmployeeInfo(e1);
-var Car = (function () {
-    function Car() {
+console.log("countAndPrint('yo dude)", countAndPrint('yo dude'));
+console.log("countAndPrint([23,234,234,65,363])", countAndPrint([23, 234, 234, 65, 363]));
+function extractAndConvert(obj, key) {
+    return 'Value: ' + obj[key];
+}
+console.log(extractAndConvert({ name: 'Jake' }, 'name'));
+var DataStorage = (function () {
+    function DataStorage() {
+        this.data = [];
     }
-    Car.prototype.drive = function () {
-        console.log('Driving');
+    DataStorage.prototype.addItem = function (item) {
+        this.data.push(item);
     };
-    return Car;
+    DataStorage.prototype.removeItem = function (item) {
+        if (this.data.indexOf(item) === -1) {
+            return;
+        }
+        this.data.splice(this.data.indexOf(item), 1);
+    };
+    DataStorage.prototype.getItems = function () {
+        return __spreadArray([], this.data);
+    };
+    return DataStorage;
 }());
-var Truck = (function () {
-    function Truck() {
-    }
-    Truck.prototype.drive = function () {
-        console.log('Drive truck');
-    };
-    Truck.prototype.loadCargo = function (amount) {
-        console.log('loading ', amount);
-    };
-    return Truck;
-}());
-var v1 = new Car();
-var v2 = new Truck();
-function useVehicle(v) {
-    v.drive();
-    if (v instanceof Truck) {
-        v.loadCargo(3);
-    }
-}
-useVehicle(v1);
-useVehicle(v2);
-function moveAnimal(a) {
-    switch (a.type) {
-        case 'bird':
-            console.log("Moving with speed " + a.flyingSpeed);
-            break;
-        case 'horse':
-            console.log("Moving with speed " + a.runningSpeed);
-            break;
-    }
-}
-var bird = {
-    type: 'bird',
-    flyingSpeed: 10
-};
-var horse = {
-    type: 'horse',
-    runningSpeed: 37
-};
-moveAnimal(bird);
-moveAnimal(horse);
-var paragraph = document.getElementById('message');
-var input = document.getElementById('user-input');
-if (input) {
-    input.value = 'Hi there';
-}
-var errorBag = {
-    email: 'not a valid email',
-    username: 'must start with a letter'
-};
-function add(n1, n2) {
-    if (typeof n1 === 'string' || typeof n2 === 'string') {
-        return n1.toString() + n2.toString();
-    }
-    return n1 + n2;
-}
-var result = add('Jake', ' Carpenter');
-var names = result.split(' ');
-var result2 = add('Jake', 1);
-var names2 = result2.split(' ');
-var fetchedUserData = {
-    id: 'u1',
-    name: 'MAx',
-    job: { title: 'Cool guy', company: 'Mine' }
-};
-var userInputNyll = null;
+var textStorage = new DataStorage();
+textStorage.addItem('Sup');
+textStorage.addItem('yoooo');
+console.log("textStorage", textStorage.getItems());
